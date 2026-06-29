@@ -746,6 +746,11 @@ const serialize = function (runtime, targetId, {allowOptimization = true} = {}) 
         obj.customFonts = fonts;
     }
 
+    if (runtime.minigameData != null) {
+        obj.minigameData = runtime.minigameData;
+    }
+
+
     // Assemble metadata
     const meta = Object.create(null);
     meta.semver = '3.0.0';
@@ -1595,6 +1600,14 @@ const deserialize = async function (json, runtime, zip, isSingleSprite) {
             if (Object.prototype.hasOwnProperty.call(json, 'extensionStorage')) {
                 runtime.extensionStorage = json.extensionStorage;
             }
+
+            if (Object.prototype.hasOwnProperty.call(json, 'minigameData')) {
+                runtime.minigameData = json.minigameData;
+            } else {
+                console.log(runtime);
+                runtime.minigameData = runtime.defaultMinigameData;
+            }
+
             return targets;
         })
         .then(targets => ({

@@ -209,6 +209,13 @@ class Runtime extends EventEmitter {
     constructor () {
         super();
 
+        // stupid but im lazy
+        this.defaultMinigameData = {
+            length: 8,
+            instruction: "Do something!!!",
+            defaultGameState: "lose"
+        }
+
         /**
          * Target management and storage.
          * @type {Array.<!Target>}
@@ -537,6 +544,8 @@ class Runtime extends EventEmitter {
          * Total number of finished or errored scratch-storage load() requests since the runtime was created or cleared.
          */
         this.finishedAssetRequests = 0;
+
+        this.minigameData = this.defaultMinigameData
     }
 
     /**
