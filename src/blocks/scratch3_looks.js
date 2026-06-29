@@ -306,7 +306,8 @@ class Scratch3LooksBlocks {
             looks_goforwardbackwardlayers: this.goForwardBackwardLayers,
             looks_size: this.getSize,
             looks_costumenumbername: this.getCostumeNumberName,
-            looks_backdropnumbername: this.getBackdropNumberName
+            looks_backdropnumbername: this.getBackdropNumberName,
+            looks_effect_value: this.getEffectValue,
         };
     }
 
@@ -322,6 +323,10 @@ class Scratch3LooksBlocks {
             },
             looks_backdropnumbername: {
                 getId: (_, fields) => getMonitorIdForBlockWithArgs('backdropnumbername', fields)
+            },
+            looks_effect_value: {
+                isSpriteSpecific: true,
+                getId: targetId => `${targetId}_effect_value`
             }
         };
     }
@@ -612,6 +617,14 @@ class Scratch3LooksBlocks {
         }
         // Else return name
         return util.target.getCostumes()[util.target.currentCostume].name;
+    }
+
+    getEffectValue (args, util) {
+        const effect = Cast.toString(args.EFFECT).toLowerCase();
+        
+        if (util.target.effects && util.target.effects.hasOwnProperty(effect)) {
+            return util.target.effects[effect];
+        }
     }
 }
 

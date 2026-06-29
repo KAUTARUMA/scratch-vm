@@ -34,6 +34,7 @@ const stacked = [
 ];
 
 const inputs = [
+    'looks_effect_value',
     'motion_xscroll',
     'motion_yscroll',
     'sensing_loud',
