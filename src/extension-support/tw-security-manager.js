@@ -35,7 +35,12 @@ class SecurityManager {
      */
     getSandboxMode (extensionURL) {
         // Default to worker for Scratch compatibility
-        return Promise.resolve('worker');
+        const url = new URL(extensionURL);
+        if (url.protocol === "https:" && url.origin === "https://extensions.turbowarp.org") {
+            return Promise.resolve('unsandboxed');
+        } else {
+            return Promise.resolve('iframe');
+        }
     }
 
     /**
@@ -45,9 +50,16 @@ class SecurityManager {
      * @param {string} extensionURL The URL of the custom extension.
      * @returns {Promise<boolean>|boolean}
      */
-    canLoadExtensionFromProject (extensionURL) {
-        // Default to false for security
-        return Promise.resolve(false);
+    canLoadExtensionFromProject(extensionURL) {
+        try {
+            const url = new URL(extensionURL);
+            return Promise.resolve(
+                url.protocol === "https:" &&
+                url.origin === "https://extensions.turbowarp.org"
+            );
+        } catch {
+            return Promise.resolve(false);
+        }
     }
 
     /**
