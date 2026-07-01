@@ -114,6 +114,7 @@ const StackOpcode = {
     CONTROL_WHILE: 'control.while',
     CONTROL_FOR: 'control.for',
     CONTROL_REPEAT: 'control.repeat',
+    CONTROL_REPEAT_SEC: 'control.repeatSec',
     CONTROL_STOP_ALL: 'control.stopAll',
     CONTROL_STOP_OTHERS: 'control.stopOthers',
     CONTROL_STOP_SCRIPT: 'control.stopScript',

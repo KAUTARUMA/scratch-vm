@@ -672,6 +672,13 @@ class ScriptTreeGenerator {
                 warpTimer: needsWarpTimer
             }, this.analyzeLoop() || needsWarpTimer);
         }
+        case 'control_repeat_sec': {
+            const seconds = this.descendInputOfBlock(block, 'SECS').toType(InputType.NUMBER);
+            return new IntermediateStackBlock(StackOpcode.CONTROL_REPEAT_SEC, {
+                seconds,
+                do: this.descendSubstack(block, 'SUBSTACK')
+            }, this.analyzeLoop());
+        }
         case 'control_stop': {
             const level = block.fields.STOP_OPTION.value;
             if (level === 'all') {

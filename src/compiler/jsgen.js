@@ -659,6 +659,15 @@ class JSGenerator {
             }
             this.source += `}\n`;
             break;
+        case StackOpcode.CONTROL_REPEAT_SEC: {
+            const endVar = this.localVariables.next();
+            this.source += `var ${endVar} = runtime.currentMSecs + ((${this.descendInput(node.seconds)}) * 1000);\n`;
+            this.source += `while (runtime.currentMSecs < ${endVar}) {\n`;
+            this.descendStack(node.do, new Frame(true));
+            this.yieldLoop();
+            this.source += `}\n`;
+            break;
+        }
         case StackOpcode.CONTROL_CLEAR_COUNTER:
             this.source += 'runtime.ext_scratch3_control._counter = 0;\n';
             break;
