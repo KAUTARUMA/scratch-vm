@@ -216,6 +216,8 @@ class Runtime extends EventEmitter {
             defaultGameState: "lose"
         }
 
+        this.timeScale = 1.0;
+
         /**
          * Target management and storage.
          * @type {Array.<!Target>}

@@ -352,7 +352,7 @@ class Scratch3LooksBlocks {
                     this._updateBubble(target, 'say', '');
                 }
                 resolve();
-            }, 1000 * args.SECS);
+            }, (1000 * args.SECS) / this.runtime.timeScale);
         });
     }
 
@@ -375,7 +375,7 @@ class Scratch3LooksBlocks {
                     this._updateBubble(target, 'think', '');
                 }
                 resolve();
-            }, 1000 * args.SECS);
+            }, (1000 * args.SECS) / this.runtime.timeScale);
         });
     }
 

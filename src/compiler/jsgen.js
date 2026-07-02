@@ -637,7 +637,7 @@ class JSGenerator {
             this.requestRedraw();
             // always yield at least once, even on 0 second durations
             this.yieldNotWarp();
-            this.source += `while (thread.timer.timeElapsed() < ${duration}) {\n`;
+            this.source += `while (thread.timer.timeElapsed(runtime.timeScale) < ${duration}) {\n`;
             this.yieldStuckOrNotWarp();
             this.source += '}\n';
             this.source += 'thread.timer = null;\n';

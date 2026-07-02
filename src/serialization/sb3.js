@@ -1604,7 +1604,6 @@ const deserialize = async function (json, runtime, zip, isSingleSprite) {
             if (Object.prototype.hasOwnProperty.call(json, 'minigameData')) {
                 runtime.minigameData = json.minigameData;
             } else {
-                console.log(runtime);
                 runtime.minigameData = runtime.defaultMinigameData;
             }
 

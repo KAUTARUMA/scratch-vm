@@ -79,7 +79,7 @@ class Scratch3ControlBlocks {
 
     repeatSec (args, util) {
         if (util.stackFrame.timer) {
-            const timeElapsed = util.stackFrame.timer.timeElapsed();
+            const timeElapsed = util.stackFrame.timer.timeElapsed(this.runtime.timeScale);
             if (timeElapsed < util.stackFrame.duration * 1000) {
                 util.startBranch(1, true);
             }

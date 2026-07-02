@@ -146,7 +146,7 @@ class Scratch3MotionBlocks {
 
     glide (args, util) {
         if (util.stackFrame.timer) {
-            const timeElapsed = util.stackFrame.timer.timeElapsed();
+            const timeElapsed = util.stackFrame.timer.timeElapsed(this.runtime.timeScale);
             if (timeElapsed < util.stackFrame.duration * 1000) {
                 // In progress: move to intermediate position.
                 const frac = timeElapsed / (util.stackFrame.duration * 1000);
