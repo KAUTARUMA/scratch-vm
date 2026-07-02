@@ -284,6 +284,7 @@ const InputOpcode = {
     SENSING_OF_SIZE: 'sensing.of.size',
     SENSING_OF_VAR: 'sensing.of.var',
     SENSING_TIMER_GET: 'timer.get',
+    SENSING_TIMESCALE_GET: 'timescale.get',
     SENSING_TOUCHING_COLOR: 'sensing.touchingColor',
     SENSING_TOUCHING_OBJECT: 'sensing.touching',
     SENSING_USERNAME: 'sensing.username',
