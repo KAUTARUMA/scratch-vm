@@ -491,10 +491,10 @@ class JSGenerator {
             return 'runtime.timeScale';
 
         case InputOpcode.SENSING_DELTATIME_GET:
-            return 'runtime.deltaTime';
+            return 'runtime.getDeltaTime()';
 
         case InputOpcode.SENSING_FPS_GET:
-            return '(1 / runtime.deltaTime).toFixed(2)';
+            return 'runtime.getFPS()';
 
         case InputOpcode.CONTROL_COUNTER:
             return 'runtime.ext_scratch3_control._counter';

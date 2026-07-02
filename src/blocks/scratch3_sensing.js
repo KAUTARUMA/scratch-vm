@@ -242,11 +242,11 @@ class Scratch3SensingBlocks {
     }
 
     getDelta (args, util) {
-        return this.runtime.deltaTime * this.runtime.timeScale;
+        return this.runtime.getDeltaTime();
     }
 
     getFPS (args, util) {
-        return (1 / this.runtime.deltaTime).toFixed(2);
+        return this.runtime.getFPS();
     }
 
     getMouseX (args, util) {

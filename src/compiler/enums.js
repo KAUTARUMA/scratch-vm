@@ -286,7 +286,7 @@ const InputOpcode = {
     SENSING_TIMER_GET: 'timer.get',
     SENSING_TIMESCALE_GET: 'timescale.get',
     SENSING_DELTATIME_GET: 'deltatime.get',
-    SENSING_FPS_GET: 'deltatime.get',
+    SENSING_FPS_GET: 'fps.get',
     SENSING_TOUCHING_COLOR: 'sensing.touchingColor',
     SENSING_TOUCHING_OBJECT: 'sensing.touching',
     SENSING_USERNAME: 'sensing.username',

@@ -967,6 +967,14 @@ class Runtime extends EventEmitter {
         return 300;
     }
 
+    getDeltaTime() {
+        return this.deltaTime * this.timeScale;
+    }
+
+    getFPS() {
+        return (1 / this.deltaTime).toFixed(2);
+    }
+
     // -----------------------------------------------------------------------------
     // -----------------------------------------------------------------------------
 
