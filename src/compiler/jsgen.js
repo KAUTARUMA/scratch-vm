@@ -670,7 +670,7 @@ class JSGenerator {
             break;
         case StackOpcode.CONTROL_REPEAT_SEC: {
             const endVar = this.localVariables.next();
-            this.source += `var ${endVar} = runtime.currentMSecs + ((${this.descendInput(node.seconds)}) * 1000);\n`;
+            this.source += `var ${endVar} = runtime.currentMSecs + ((${this.descendInput(node.seconds)}) * 1000 / runtime.timeScale);\n`;
             this.source += `while (runtime.currentMSecs < ${endVar}) {\n`;
             this.descendStack(node.do, new Frame(true));
             this.yieldLoop();
