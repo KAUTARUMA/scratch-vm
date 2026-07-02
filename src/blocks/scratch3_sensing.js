@@ -60,6 +60,8 @@ class Scratch3SensingBlocks {
             sensing_timer: this.getTimer,
             sensing_resettimer: this.resetTimer,
             sensing_timeScale: this.getTimeScale,
+            sensing_deltaTime: this.getDelta,
+            sensing_fps: this.getFPS,
             sensing_of: this.getAttributeOf,
             sensing_mousex: this.getMouseX,
             sensing_mousey: this.getMouseY,
@@ -237,6 +239,14 @@ class Scratch3SensingBlocks {
 
     getTimeScale (args, util) {
         return this.runtime.timeScale;
+    }
+
+    getDelta (args, util) {
+        return this.runtime.deltaTime * this.runtime.timeScale;
+    }
+
+    getFPS (args, util) {
+        return (1 / this.runtime.deltaTime).toFixed(2);
     }
 
     getMouseX (args, util) {

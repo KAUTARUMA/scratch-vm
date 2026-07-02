@@ -218,6 +218,9 @@ class Runtime extends EventEmitter {
 
         this.timeScale = 1.0;
 
+        this.deltaTime = 0.0;
+        this._previousTime = 0.0;
+
         /**
          * Target management and storage.
          * @type {Array.<!Target>}
@@ -2551,7 +2554,18 @@ class Runtime extends EventEmitter {
             }
             this.profiler.start(stepThreadsProfilerId);
         }
+
         this.emit(Runtime.BEFORE_EXECUTE);
+
+        const now = performance.now();
+
+        // https://github.com/TurboWarp/extensions/blob/4818a7496c56677e3fef0a8fa2d6fca7e3052285/extensions/XeroName/Deltatime.js#L4
+        if (this._previousTime === 0) {
+            this.deltaTime = 1 / this.frameLoop.framerate;
+        } else {
+            this.deltaTime = (now - this._previousTime) / 1000;
+        }
+
         const doneThreads = this.sequencer.stepThreads();
         if (this.profiler !== null) {
             this.profiler.stop();
