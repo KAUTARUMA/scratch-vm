@@ -41,7 +41,7 @@ class FrameLoop {
     constructor (runtime) {
         this.runtime = runtime;
         this.running = false;
-        this.setFramerate(30);
+        this.setFramerate(60);
         this.setInterpolation(false);
 
         this.stepCallback = this.stepCallback.bind(this);
