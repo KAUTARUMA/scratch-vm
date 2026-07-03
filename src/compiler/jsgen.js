@@ -486,6 +486,15 @@ class JSGenerator {
 
         case InputOpcode.SENSING_TIMER_GET:
             return 'runtime.ioDevices.clock.projectTimer()';
+        
+        case InputOpcode.SENSING_TIMESCALE_GET:
+            return 'runtime.timeScale';
+
+        case InputOpcode.SENSING_DELTATIME_GET:
+            return 'runtime.getDeltaTime()';
+
+        case InputOpcode.SENSING_FPS_GET:
+            return 'runtime.getFPS()';
 
         case InputOpcode.CONTROL_COUNTER:
             return 'runtime.ext_scratch3_control._counter';
@@ -637,7 +646,7 @@ class JSGenerator {
             this.requestRedraw();
             // always yield at least once, even on 0 second durations
             this.yieldNotWarp();
-            this.source += `while (thread.timer.timeElapsed() < ${duration}) {\n`;
+            this.source += `while (thread.timer.timeElapsed(runtime.timeScale) < ${duration}) {\n`;
             this.yieldStuckOrNotWarp();
             this.source += '}\n';
             this.source += 'thread.timer = null;\n';
@@ -659,6 +668,15 @@ class JSGenerator {
             }
             this.source += `}\n`;
             break;
+        case StackOpcode.CONTROL_REPEAT_SEC: {
+            const endVar = this.localVariables.next();
+            this.source += `var ${endVar} = runtime.currentMSecs + ((${this.descendInput(node.seconds)}) * 1000 / runtime.timeScale);\n`;
+            this.source += `while (runtime.currentMSecs < ${endVar}) {\n`;
+            this.descendStack(node.do, new Frame(true));
+            this.yieldLoop();
+            this.source += `}\n`;
+            break;
+        }
         case StackOpcode.CONTROL_CLEAR_COUNTER:
             this.source += 'runtime.ext_scratch3_control._counter = 0;\n';
             break;

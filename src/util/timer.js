@@ -76,8 +76,8 @@ class Timer {
         this.startTime = this.nowObj.now();
     }
 
-    timeElapsed () {
-        return this.nowObj.now() - this.startTime;
+    timeElapsed (timeScale = 1.0) {
+        return (this.nowObj.now() - this.startTime) * timeScale;
     }
 
     /**

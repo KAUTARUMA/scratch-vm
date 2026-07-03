@@ -551,6 +551,12 @@ class ScriptTreeGenerator {
         case 'sensing_timer':
             this.usesTimer = true;
             return new IntermediateInput(InputOpcode.SENSING_TIMER_GET, InputType.NUMBER_POS_REAL | InputType.NUMBER_ZERO);
+        case 'sensing_timeScale':
+            return new IntermediateInput(InputOpcode.SENSING_TIMESCALE_GET, InputType.NUMBER_POS_REAL | InputType.NUMBER_ZERO);
+        case 'sensing_deltaTime':
+            return new IntermediateInput(InputOpcode.SENSING_DELTATIME_GET, InputType.NUMBER_POS_REAL | InputType.NUMBER_ZERO);
+        case 'sensing_fps':
+            return new IntermediateInput(InputOpcode.SENSING_FPS_GET, InputType.NUMBER_POS_REAL | InputType.NUMBER_ZERO);
         case 'sensing_touchingcolor':
             return new IntermediateInput(InputOpcode.SENSING_TOUCHING_COLOR, InputType.BOOLEAN, {
                 color: this.descendInputOfBlock(block, 'COLOR').toType(InputType.COLOR)
@@ -671,6 +677,13 @@ class ScriptTreeGenerator {
                 do: this.descendSubstack(block, 'SUBSTACK'),
                 warpTimer: needsWarpTimer
             }, this.analyzeLoop() || needsWarpTimer);
+        }
+        case 'control_repeat_sec': {
+            const seconds = this.descendInputOfBlock(block, 'SECS').toType(InputType.NUMBER);
+            return new IntermediateStackBlock(StackOpcode.CONTROL_REPEAT_SEC, {
+                seconds,
+                do: this.descendSubstack(block, 'SUBSTACK')
+            }, this.analyzeLoop());
         }
         case 'control_stop': {
             const level = block.fields.STOP_OPTION.value;

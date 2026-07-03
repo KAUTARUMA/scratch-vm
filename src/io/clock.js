@@ -17,17 +17,17 @@ class Clock {
         if (this._paused) {
             return this._pausedTime / 1000;
         }
-        return this._projectTimer.timeElapsed() / 1000;
+        return this._projectTimer.timeElapsed(this.runtime.timeScale) / 1000;
     }
 
     pause () {
         this._paused = true;
-        this._pausedTime = this._projectTimer.timeElapsed();
+        this._pausedTime = this._projectTimer.timeElapsed(this.runtime.timeScale);
     }
 
     resume () {
         this._paused = false;
-        const dt = this._projectTimer.timeElapsed() - this._pausedTime;
+        const dt = this._projectTimer.timeElapsed(this.runtime.timeScale) - this._pausedTime;
         this._projectTimer.startTime += dt;
     }
 

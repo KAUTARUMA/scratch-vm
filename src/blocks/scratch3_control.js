@@ -1,4 +1,5 @@
 const Cast = require('../util/cast');
+const Timer = require('../util/timer');
 
 class Scratch3ControlBlocks {
     constructor (runtime) {
@@ -25,6 +26,7 @@ class Scratch3ControlBlocks {
         return {
             control_repeat: this.repeat,
             control_repeat_until: this.repeatUntil,
+            control_repeat_sec: this.repeatSec,
             control_while: this.repeatWhile,
             control_for_each: this.forEach,
             control_forever: this.forever,
@@ -71,6 +73,25 @@ class Scratch3ControlBlocks {
         const condition = Cast.toBoolean(args.CONDITION);
         // If the condition is false (repeat UNTIL), start the branch.
         if (!condition) {
+            util.startBranch(1, true);
+        }
+    }
+
+    repeatSec (args, util) {
+        if (util.stackFrame.timer) {
+            const timeElapsed = util.stackFrame.timer.timeElapsed(this.runtime.timeScale);
+            if (timeElapsed < util.stackFrame.duration * 1000) {
+                util.startBranch(1, true);
+            }
+
+            // stops here
+        } else {
+            util.stackFrame.timer = new Timer();
+            util.stackFrame.timer.start();
+            util.stackFrame.duration = Cast.toNumber(args.SECS);
+            if (util.stackFrame.duration <= 0) {
+                return;
+            }
             util.startBranch(1, true);
         }
     }

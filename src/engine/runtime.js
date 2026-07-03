@@ -209,6 +209,20 @@ class Runtime extends EventEmitter {
     constructor () {
         super();
 
+        // stupid but im lazy
+        this.defaultMinigameData = {
+            length: 8,
+            instruction: "Do something!!!",
+            defaultGameState: "lose"
+        }
+
+        this.timeScale = 1.0;
+
+        this.deltaTime = 0.0;
+        this._previousTime = 0.0;
+
+        this._gameState = "neutral";
+
         /**
          * Target management and storage.
          * @type {Array.<!Target>}
@@ -537,6 +551,25 @@ class Runtime extends EventEmitter {
          * Total number of finished or errored scratch-storage load() requests since the runtime was created or cleared.
          */
         this.finishedAssetRequests = 0;
+
+        this.minigameEndedCallback;
+
+        this.minigameData = this.defaultMinigameData
+    }
+
+    get gameState() {
+        return this._gameState;
+    }
+
+    set gameState(value) {
+        if (this._gameState !== value) {
+            const lastState = this._gameState;
+            this._gameState = value;
+            
+            if (lastState === "neutral" && typeof this.minigameEndedCallback === 'function') {
+                this.minigameEndedCallback(value);
+            }
+        }
     }
 
     /**
@@ -951,6 +984,14 @@ class Runtime extends EventEmitter {
     static get MAX_CLONES () {
         // tw: clone limit is set per-runtime in runtimeOptions, this is only the initial value
         return 300;
+    }
+
+    getDeltaTime() {
+        return this.deltaTime * this.timeScale;
+    }
+
+    getFPS() {
+        return (1 / this.deltaTime).toFixed(2);
     }
 
     // -----------------------------------------------------------------------------
@@ -2442,6 +2483,9 @@ class Runtime extends EventEmitter {
     greenFlag () {
         this.stopAll();
         this.emit(Runtime.PROJECT_START);
+
+        this.gameState = "neutral"
+
         this.updateCurrentMSecs();
         this.ioDevices.clock.resetProjectTimer();
         this.targets.forEach(target => target.clearEdgeActivatedValues());
@@ -2540,7 +2584,18 @@ class Runtime extends EventEmitter {
             }
             this.profiler.start(stepThreadsProfilerId);
         }
+
         this.emit(Runtime.BEFORE_EXECUTE);
+
+        const now = performance.now();
+
+        // https://github.com/TurboWarp/extensions/blob/4818a7496c56677e3fef0a8fa2d6fca7e3052285/extensions/XeroName/Deltatime.js#L4
+        if (this._previousTime === 0) {
+            this.deltaTime = 1 / this.frameLoop.framerate;
+        } else {
+            this.deltaTime = (now - this._previousTime) / 1000;
+        }
+
         const doneThreads = this.sequencer.stepThreads();
         if (this.profiler !== null) {
             this.profiler.stop();
