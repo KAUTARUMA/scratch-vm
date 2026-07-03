@@ -7,13 +7,9 @@
 
 // Please keep these lists alphabetical.
 
+// jk keep them in block order
+
 const stacked = [
-    'looks_changestretchby',
-    'looks_hideallsprites',
-    'looks_sayforsecs',
-    'looks_setstretchto',
-    'looks_switchbackdroptoandwait',
-    'looks_thinkforsecs',
     'motion_align_scene',
     'motion_glidesecstoxy',
     'motion_glideto',
@@ -21,8 +17,12 @@ const stacked = [
     'motion_pointtowards',
     'motion_scroll_right',
     'motion_scroll_up',
-    'sensing_askandwait',
-    'sensing_setdragmode',
+    'looks_changestretchby',
+    'looks_hideallsprites',
+    'looks_sayforsecs',
+    'looks_setstretchto',
+    'looks_switchbackdroptoandwait',
+    'looks_thinkforsecs',
     'sound_changeeffectby',
     'sound_changevolumeby',
     'sound_cleareffects',
@@ -30,18 +30,24 @@ const stacked = [
     'sound_playuntildone',
     'sound_seteffectto',
     'sound_setvolumeto',
-    'sound_stopallsounds'
+    'sound_stopallsounds',
+    'event_wingame',
+    'event_losegame',
+    'sensing_askandwait',
+    'sensing_setdragmode',
 ];
 
 const inputs = [
-    'looks_effect_value',
     'motion_xscroll',
     'motion_yscroll',
+    'looks_effect_value',
+    'sound_volume',
+    'event_isgameover',
+    'event_gamestate',
     'sensing_loud',
     'sensing_loudness',
     'sensing_online',
-    'sensing_userid',
-    'sound_volume'
+    'sensing_userid'
 ];
 
 module.exports = {

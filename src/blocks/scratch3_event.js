@@ -18,6 +18,17 @@ class Scratch3EventBlocks {
         });
     }
 
+    getMonitored() {
+        return {
+            event_isgameover: {
+                getId: () => 'isgameover'
+            },
+            event_gamestate: {
+                getId: () => 'gamestate'
+            }
+        }
+    }
+
     /**
      * Retrieve the block primitives implemented by this package.
      * @return {object.<string, Function>} Mapping of opcode to Function.
@@ -27,7 +38,12 @@ class Scratch3EventBlocks {
             event_whentouchingobject: this.touchingObject,
             event_broadcast: this.broadcast,
             event_broadcastandwait: this.broadcastAndWait,
-            event_whengreaterthan: this.hatGreaterThanPredicate
+            event_wingame: this.winGame,
+            event_losegame: this.loseGame,
+            event_isgameover: this.isGameOver,
+            event_gamestate: this.getGameState,
+            event_whengreaterthan: this.hatGreaterThanPredicate,
+            event_whenwinlose: this.whenWinLose
         };
     }
 
@@ -56,6 +72,10 @@ class Scratch3EventBlocks {
                 restartExistingThreads: false,
                 edgeActivated: true
             },
+            event_whenwinlose: {
+                restartExistingThreads: false,
+                edgeActivated: true
+            },
             event_whenbroadcastreceived: {
                 restartExistingThreads: true
             }
@@ -74,6 +94,17 @@ class Scratch3EventBlocks {
             return util.ioQuery('clock', 'projectTimer') > value;
         case 'loudness':
             return this.runtime.audioEngine && this.runtime.audioEngine.getLoudness() > value;
+        }
+        return false;
+    }
+
+    whenWinLose (args, util) {
+        const option = Cast.toString(args.WHENWINLOSEMENU).toLowerCase();
+        switch (option) {
+            case 'win':
+                return this.runtime.gameState === "win";
+            case 'lose':
+                return this.runtime.gameState === "lose";
         }
         return false;
     }
@@ -131,6 +162,26 @@ class Scratch3EventBlocks {
                 }
             }
         }
+    }
+
+    winGame (args, util) {
+        if (this.runtime.gameState === "neutral") {
+            this.runtime.gameState = "win";
+        }
+    }
+
+    loseGame (args, util) {
+        if (this.runtime.gameState === "neutral") {
+            this.runtime.gameState = "lose";
+        }
+    }
+
+    isGameOver (args, util) {
+        return this.runtime.gameState !== "neutral";
+    }
+
+    getGameState (args, util) {
+        return this.runtime.gameState;
     }
 }
 

@@ -221,6 +221,8 @@ class Runtime extends EventEmitter {
         this.deltaTime = 0.0;
         this._previousTime = 0.0;
 
+        this._gameState = "neutral";
+
         /**
          * Target management and storage.
          * @type {Array.<!Target>}
@@ -551,6 +553,26 @@ class Runtime extends EventEmitter {
         this.finishedAssetRequests = 0;
 
         this.minigameData = this.defaultMinigameData
+    }
+
+    get gameState() {
+        return this._gameState;
+    }
+
+    set gameState(value) {
+        if (this._gameState !== value) {
+            const lastState = this._gameState;
+
+            this._gameState = value;
+
+            this.emit("gameStateChange", value);
+
+            if (lastState === "neutral") {
+                this.emit("gameEnded", value);
+            }
+            
+            console.log(this._gameState);
+        }
     }
 
     /**
@@ -2464,6 +2486,9 @@ class Runtime extends EventEmitter {
     greenFlag () {
         this.stopAll();
         this.emit(Runtime.PROJECT_START);
+
+        this.gameState = "neutral"
+
         this.updateCurrentMSecs();
         this.ioDevices.clock.resetProjectTimer();
         this.targets.forEach(target => target.clearEdgeActivatedValues());
