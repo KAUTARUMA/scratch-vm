@@ -469,8 +469,8 @@ class Runtime extends EventEmitter {
 
         this.runtimeOptions = {
             maxClones: Runtime.MAX_CLONES,
-            miscLimits: true,
-            fencing: true
+            miscLimits: false,
+            fencing: false
         };
 
         this.compilerOptions = {
@@ -481,7 +481,7 @@ class Runtime extends EventEmitter {
         this.debug = false;
 
         this._lastStepTime = Date.now();
-        this.interpolationEnabled = false;
+        this.interpolationEnabled = true;
 
         this._defaultStoredSettings = this._generateAllProjectOptions();
 
@@ -983,7 +983,7 @@ class Runtime extends EventEmitter {
      */
     static get MAX_CLONES () {
         // tw: clone limit is set per-runtime in runtimeOptions, this is only the initial value
-        return 300;
+        return Infinity;
     }
 
     getDeltaTime() {
@@ -2900,6 +2900,10 @@ class Runtime extends EventEmitter {
 
     parseProjectOptions () {
         const comment = this.findProjectOptionsComment();
+
+        this.renderer.setUseHighQualityRender(true); // have to do this here because its null earlier on #oops
+        return; // we dont want any of these
+        
         if (!comment) return;
         const lineWithMagic = comment.text.split('\n').find(i => i.endsWith(COMMENT_CONFIG_MAGIC));
         if (!lineWithMagic) {
@@ -2948,7 +2952,7 @@ class Runtime extends EventEmitter {
             runtimeOptions: this.runtimeOptions,
             interpolation: this.interpolationEnabled,
             turbo: this.turboMode,
-            hq: this.renderer ? this.renderer.useHighQualityRender : false,
+            hq: this.renderer ? this.renderer.useHighQualityRender : true,
             width: this.stageWidth,
             height: this.stageHeight
         };
