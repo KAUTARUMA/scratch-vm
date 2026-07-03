@@ -552,6 +552,8 @@ class Runtime extends EventEmitter {
          */
         this.finishedAssetRequests = 0;
 
+        this.minigameEndedCallback;
+
         this.minigameData = this.defaultMinigameData
     }
 
@@ -562,16 +564,11 @@ class Runtime extends EventEmitter {
     set gameState(value) {
         if (this._gameState !== value) {
             const lastState = this._gameState;
-
             this._gameState = value;
-
-            this.emit("gameStateChange", value);
-
-            if (lastState === "neutral") {
-                this.emit("gameEnded", value);
-            }
             
-            console.log(this._gameState);
+            if (lastState === "neutral" && typeof this.minigameEndedCallback === 'function') {
+                this.minigameEndedCallback(value);
+            }
         }
     }
 
